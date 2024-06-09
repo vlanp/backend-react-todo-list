@@ -1,6 +1,17 @@
 import express from "express";
 import Task from "../models/Task.js";
 const router = express.Router();
+router.get("/task", async (req, res) => {
+    try {
+        const response = await Task.find();
+        res.status(200).json({ message: response });
+    }
+    catch (error) {
+        res
+            .status(error.status || 500)
+            .json({ message: error.message || "Internal server error" });
+    }
+});
 router.post("/task", async (req, res) => {
     try {
         const { task } = req.body;
