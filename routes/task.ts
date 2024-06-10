@@ -36,6 +36,7 @@ router.post("/task", async (req, res) => {
 
 router.patch("/task/:id", async (req, res) => {
   try {
+    console.log(req.query.finished);
     let finished = req.query.finished === "true" ? true : false;
     const { id } = req.params;
 
