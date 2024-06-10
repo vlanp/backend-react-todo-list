@@ -29,7 +29,7 @@ router.post("/task", async (req, res) => {
 });
 router.patch("/task/:id", async (req, res) => {
     try {
-        let finished = Boolean(req.query.finished);
+        let finished = req.query.finished === "true" ? true : false;
         const { id } = req.params;
         const task = await Task.findByIdAndUpdate(id, {
             finished: finished,
