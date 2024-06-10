@@ -29,20 +29,15 @@ router.post("/task", async (req, res) => {
 });
 router.patch("/task/:id", async (req, res) => {
     try {
-        const { finished } = req.query;
+        let finished = Boolean(req.query.finished);
         const { id } = req.params;
-        if (typeof finished === "boolean") {
-            const task = await Task.findByIdAndUpdate(id, {
-                finished: finished,
-            });
-            if (!task) {
-                throw { status: 404, message: "No task were found with this id" };
-            }
-            res.status(200).json({ message: task });
+        const task = await Task.findByIdAndUpdate(id, {
+            finished: finished,
+        });
+        if (!task) {
+            throw { status: 404, message: "No task were found with this id" };
         }
-        else {
-            throw { status: 400, message: "Must have a boolean query finished" };
-        }
+        res.status(200).json({ message: task });
     }
     catch (error) {
         res
