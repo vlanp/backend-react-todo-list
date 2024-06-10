@@ -27,6 +27,29 @@ router.post("/task", async (req, res) => {
             .json({ message: error.message || "Internal server error" });
     }
 });
+router.patch("/task/:id", async (req, res) => {
+    try {
+        const { finished } = req.query;
+        const { id } = req.params;
+        if (typeof finished === "boolean") {
+            const task = await Task.findByIdAndUpdate(id, {
+                finished: finished,
+            });
+            if (!task) {
+                throw { status: 404, message: "No task were found with this id" };
+            }
+            res.status(200).json({ message: task });
+        }
+        else {
+            throw { status: 400, message: "Must have a boolean query finished" };
+        }
+    }
+    catch (error) {
+        res
+            .status(error.status || 500)
+            .json({ message: error.message || "Internal server error" });
+    }
+});
 router.delete("/task/:id", async (req, res) => {
     try {
         const id = req.params.id;
